@@ -1,0 +1,10 @@
+load("~/Downloads/titanic.raw.rdata")
+idx <- sample(1:nrow(titanic.raw), 5)
+titanic.raw[idx, ]
+View("~/Downloads/titanic.raw.rdata")
+library(arules)
+rules.all <- apriori(titanic.raw)
+inspect(rules.all)
+rules <- apriori(titanic.raw,control = list(verbose=F),parameter = list(minlen=2, supp=0.005, conf=0.8),appearance = list(rhs=c("Survived=No","Survived=Yes"),default="lhs"))
+quality(rules) <- round(quality(rules), digits=3)
+rules.sorted <- sort(rules, by="lift")
